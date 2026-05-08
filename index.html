@@ -6,6 +6,26 @@
     <title>Abstract. | Modern Vision</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-scroll {
+            animation: scroll 30s linear infinite;
+        }
+        @keyframes equalizer {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+        .bar {
+            animation: equalizer 0.8s ease-in-out infinite;
+            animation-play-state: paused;
+        }
+        .playing .bar:nth-child(1) { animation-delay: 0.1s; animation-play-state: running; }
+        .playing .bar:nth-child(2) { animation-delay: 0.3s; animation-play-state: running; }
+        .playing .bar:nth-child(3) { animation-delay: 0.2s; animation-play-state: running; }
+    </style>
     <script>
         tailwind.config = {
             theme: {
@@ -44,21 +64,39 @@
         }
     </script>
 </head>
-<body class="bg-dark text-light font-sans antialiased selection:bg-accent selection:text-dark">
+<body class="bg-[#0a0a0a] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(57,255,20,0.15),rgba(10,10,10,1))] text-white font-sans antialiased selection:bg-[#39ff14] selection:text-black min-h-screen">
 
     <!-- Navigation Bar -->
     <nav class="sticky top-0 z-50 bg-dark/80 backdrop-blur-md border-b border-gray-800 shadow-sm relative">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#home" class="text-2xl font-bold tracking-tighter text-white hover:text-accent transition-colors duration-200 ease-out p-2 -ml-2 hover:drop-shadow-[0_0_8px_rgba(57,255,20,0.6)]">Abstract.</a>
-            
+
             <!-- Desktop Menu -->
-            <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide">
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
                 <a href="#home" class="p-2 text-gray-300 hover:text-accent transition-colors duration-200 ease-out hover:drop-shadow-[0_0_8px_rgba(57,255,20,0.6)]">Home</a>
                 <a href="#collections" class="p-2 text-gray-300 hover:text-accent transition-colors duration-200 ease-out hover:drop-shadow-[0_0_8px_rgba(57,255,20,0.6)]">Collections</a>
                 <a href="#about" class="p-2 text-gray-300 hover:text-accent transition-colors duration-200 ease-out hover:drop-shadow-[0_0_8px_rgba(57,255,20,0.6)]">About</a>
                 <a href="#contact" class="p-2 text-gray-300 hover:text-accent transition-colors duration-200 ease-out hover:drop-shadow-[0_0_8px_rgba(57,255,20,0.6)]">Contact</a>
+                
+                <!-- Music Player Toggle -->
+                <div id="music-btn" class="flex items-center space-x-3 cursor-pointer group border-l border-gray-800 pl-8 ml-2">
+                    <div class="relative w-5 h-5 flex items-center justify-center">
+                        <svg id="play-icon" class="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg id="pause-icon" class="w-4 h-4 text-accent hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </div>
+                    <span class="text-xs uppercase tracking-widest text-gray-500 group-hover:text-accent transition-colors">Abstract. Radio</span>
+                    <div id="equalizer" class="flex items-end space-x-0.5 h-4">
+                        <div class="bg-accent w-1 h-1 rounded-full bar"></div>
+                        <div class="bg-accent w-1 h-1 rounded-full bar"></div>
+                        <div class="bg-accent w-1 h-1 rounded-full bar"></div>
+                    </div>
+                    <!-- Hidden Spotify Iframe -->
+                    <div class="absolute opacity-0 pointer-events-none w-1 h-1 overflow-hidden">
+                        <div id="embed-iframe"></div>
+                    </div>
+                </div>
             </div>
-            
+
             <!-- Mobile Menu Toggle Button -->
             <div class="md:hidden flex items-center">
                 <button id="mobile-menu-btn" class="text-gray-300 hover:text-accent transition-colors duration-200 focus:outline-none p-3 -mr-3 rounded-md" aria-label="Toggle menu">
@@ -103,6 +141,22 @@
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
     </section>
 
+    <!-- 'New Drops' Ticker -->
+    <div class="bg-accent py-3 overflow-hidden border-y border-dark">
+        <div class="whitespace-nowrap flex animate-scroll">
+            <div class="flex items-center space-x-12 px-6">
+                <span class="text-dark font-bold text-sm uppercase tracking-tighter">🚨 JUST DROPPED: Limited Edition Jujutsu Kaisen Prints • New Minimalist Chronograph Watches • Custom Engraved Wedding Sets 🚨</span>
+                <span class="text-dark font-bold text-sm uppercase tracking-tighter">🚨 JUST DROPPED: Limited Edition Jujutsu Kaisen Prints • New Minimalist Chronograph Watches • Custom Engraved Wedding Sets 🚨</span>
+                <span class="text-dark font-bold text-sm uppercase tracking-tighter">🚨 JUST DROPPED: Limited Edition Jujutsu Kaisen Prints • New Minimalist Chronograph Watches • Custom Engraved Wedding Sets 🚨</span>
+            </div>
+            <div class="flex items-center space-x-12 px-6">
+                <span class="text-dark font-bold text-sm uppercase tracking-tighter">🚨 JUST DROPPED: Limited Edition Jujutsu Kaisen Prints • New Minimalist Chronograph Watches • Custom Engraved Wedding Sets 🚨</span>
+                <span class="text-dark font-bold text-sm uppercase tracking-tighter">🚨 JUST DROPPED: Limited Edition Jujutsu Kaisen Prints • New Minimalist Chronograph Watches • Custom Engraved Wedding Sets 🚨</span>
+                <span class="text-dark font-bold text-sm uppercase tracking-tighter">🚨 JUST DROPPED: Limited Edition Jujutsu Kaisen Prints • New Minimalist Chronograph Watches • Custom Engraved Wedding Sets 🚨</span>
+            </div>
+        </div>
+    </div>
+
     <!-- About Section -->
     <section id="about" class="py-24 bg-darker border-t border-gray-900">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
@@ -117,7 +171,6 @@
                 </p>
             </div>
             <div class="md:w-1/2 w-full h-80 bg-card rounded-2xl overflow-hidden relative shadow-[0_0_20px_rgba(57,255,20,0.3)] border border-accent/20 group">
-                <!-- Image wrapper with snappy transition on hover -->
                 <div class="absolute inset-0 border-2 border-transparent group-hover:border-accent/50 rounded-2xl transition-colors duration-300 z-10 pointer-events-none"></div>
                 <div class="absolute inset-0 bg-dark/30 z-0 pointer-events-none transition-opacity duration-300 group-hover:bg-transparent"></div>
                 <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800" alt="Creative Minimalist Workspace" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300 opacity-80 group-hover:opacity-100 transform group-hover:scale-105">
@@ -129,18 +182,24 @@
     <section id="collections" class="py-24 bg-dark">
         <div class="max-w-7xl mx-auto px-6 text-center">
             <h2 class="text-sm font-bold text-accent uppercase tracking-widest mb-3">Our Offerings</h2>
-            <h3 class="text-3xl md:text-4xl font-bold text-white mb-16">Collections</h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <h3 class="text-3xl md:text-4xl font-bold text-white mb-10">Collections</h3>
+
+            <!-- Toggle Button -->
+            <button id="collections-toggle" class="mx-auto mb-12 flex items-center justify-center space-x-3 text-white font-bold text-lg hover:text-accent transition-colors duration-300 focus:outline-none group">
+                <span>View Full Collection</span>
+                <svg id="collections-icon" class="w-6 h-6 transform transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] text-accent group-hover:drop-shadow-[0_0_8px_rgba(57,255,20,0.6)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            </button>
+
+            <!-- Collapsible Grid Wrapper -->
+            <div id="collections-grid-wrapper" class="overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] max-h-0 opacity-0">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pb-4">
                 <!-- Collection 1 -->
                 <div class="bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-[0_0_20px_rgba(57,255,20,0.15)] transition-all duration-300 border border-gray-800 hover:border-accent/50 group transform hover:-translate-y-2 flex flex-col">
                     <img src="https://dummyimage.com/400x300/111/39ff14" alt="Accessories" class="w-full h-64 object-cover border-b border-gray-800">
                     <div class="p-8 text-left flex-grow flex flex-col">
                         <h4 class="text-xl font-bold text-white mb-3 group-hover:text-accent transition-colors duration-300">Accessories</h4>
                         <p class="text-gray-400 leading-relaxed flex-grow mb-8">Discover our sleek, minimalist designs that effortlessly elevate your everyday style.</p>
-                        
                         <div class="mt-auto">
-                            <!-- Paste your Razorpay Payment Link here -->
                             <a href="#" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-transparent border border-accent text-accent py-3 rounded-lg font-bold uppercase tracking-widest hover:bg-accent hover:text-dark transition-all duration-300 hover:shadow-[0_0_15px_rgba(57,255,20,0.6)]">Buy</a>
                             <div class="mt-3 flex items-center justify-center space-x-1 text-gray-500 text-xs">
                                 <svg class="w-3 h-3 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -149,16 +208,14 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Collection 2 -->
                 <div class="bg-card rounded-2xl overflow-hidden shadow-md hover:shadow-[0_0_20px_rgba(57,255,20,0.15)] transition-all duration-300 border border-gray-800 hover:border-accent/50 group transform hover:-translate-y-2 flex flex-col">
                     <img src="https://cdn.personalisedgiftsshop.co.uk/media/catalog/product/cache/725930ce2627feed807eee160ceab69e/p/e/personalised-retro-sweet-hamper-massive-hug-x-1014_1.jpg" alt="Marriage Gifts" class="w-full h-64 object-cover border-b border-gray-800">
                     <div class="p-8 text-left flex-grow flex flex-col">
-                        <h4 class="text-xl font-bold text-white mb-3 group-hover:text-accent transition-colors duration-300">Surpirse Hampers</h4>
+                        <h4 class="text-xl font-bold text-white mb-3 group-hover:text-accent transition-colors duration-300">Surprise Hampers</h4>
                         <p class="text-gray-400 leading-relaxed flex-grow mb-8">Explore a thoughtful curation of memorable gifts designed to celebrate love and the perfect union.</p>
-                        
                         <div class="mt-auto">
-                            <!-- Paste your Razorpay Payment Link here -->
                             <a href="#" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-transparent border border-accent text-accent py-3 rounded-lg font-bold uppercase tracking-widest hover:bg-accent hover:text-dark transition-all duration-300 hover:shadow-[0_0_15px_rgba(57,255,20,0.6)]">Buy</a>
                             <div class="mt-3 flex items-center justify-center space-x-1 text-gray-500 text-xs">
                                 <svg class="w-3 h-3 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -174,15 +231,111 @@
                     <div class="p-8 text-left flex-grow flex flex-col">
                         <h4 class="text-xl font-bold text-white mb-3 group-hover:text-accent transition-colors duration-300">Anime Posters</h4>
                         <p class="text-gray-400 leading-relaxed flex-grow mb-8">Immerse yourself in high-quality, vibrant artwork that brings your favorite series to life.</p>
-                        
                         <div class="mt-auto">
-                            <!-- Paste your Razorpay Payment Link here -->
                             <a href="#" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-transparent border border-accent text-accent py-3 rounded-lg font-bold uppercase tracking-widest hover:bg-accent hover:text-dark transition-all duration-300 hover:shadow-[0_0_15px_rgba(57,255,20,0.6)]">Buy</a>
                             <div class="mt-3 flex items-center justify-center space-x-1 text-gray-500 text-xs">
                                 <svg class="w-3 h-3 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                                 <span>Secure Checkout via Razorpay</span>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-24 bg-darker border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h2 class="text-sm font-bold text-accent uppercase tracking-widest mb-3">Client Feedback</h2>
+            <h3 class="text-3xl md:text-4xl font-bold text-white mb-16">What Our Clients Say</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-card p-8 rounded-2xl border border-gray-800 text-left hover:border-accent/30 transition-colors group">
+                    <div class="flex text-accent mb-4">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    </div>
+                    <p class="text-gray-400 mb-6 italic">"The minimalist watch I ordered is stunning. The quality exceeds the price point, and it arrived in beautiful packaging."</p>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-accent font-bold">A</div>
+                        <div>
+                            <h4 class="text-white font-bold text-sm">Arjun M.</h4>
+                            <p class="text-gray-500 text-xs">Mumbai, India</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card p-8 rounded-2xl border border-gray-800 text-left hover:border-accent/30 transition-colors group">
+                    <div class="flex text-accent mb-4">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    </div>
+                    <p class="text-gray-400 mb-6 italic">"The custom engraved marriage hamper was the highlight of my best friend's wedding. Truly a unique and thoughtful gift."</p>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-accent font-bold">P</div>
+                        <div>
+                            <h4 class="text-white font-bold text-sm">Priya S.</h4>
+                            <p class="text-gray-500 text-xs">Bangalore, India</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card p-8 rounded-2xl border border-gray-800 text-left hover:border-accent/30 transition-colors group">
+                    <div class="flex text-accent mb-4">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    </div>
+                    <p class="text-gray-400 mb-6 italic">"The anime posters are high-definition and look incredible on my studio wall. Fast shipping and zero damage on arrival."</p>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-accent font-bold">R</div>
+                        <div>
+                            <h4 class="text-white font-bold text-sm">Rahul K.</h4>
+                            <p class="text-gray-500 text-xs">Delhi, India</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 bg-dark border-t border-gray-900">
+        <div class="max-w-3xl mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-12 text-center">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <div class="faq-item border border-gray-800 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left hover:bg-card transition-colors">
+                        <span class="text-white font-bold">How do custom marriage gifts work?</span>
+                        <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="faq-content hidden px-8 py-6 bg-darker text-gray-400 border-t border-gray-800">
+                        Select your base hamper, provide the names or message for engraving during checkout, and our artisans will handle the rest. We'll send a digital preview before finalizing.
+                    </div>
+                </div>
+                <div class="faq-item border border-gray-800 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left hover:bg-card transition-colors">
+                        <span class="text-white font-bold">Do you ship across India?</span>
+                        <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="faq-content hidden px-8 py-6 bg-darker text-gray-400 border-t border-gray-800">
+                        Yes, we offer premium door-to-door delivery across 25,000+ pin codes in India. Standard delivery takes 3-5 business days.
+                    </div>
+                </div>
+                <div class="faq-item border border-gray-800 rounded-xl overflow-hidden">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left hover:bg-card transition-colors">
+                        <span class="text-white font-bold">Is my UPI payment secure?</span>
+                        <svg class="w-5 h-5 text-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="faq-content hidden px-8 py-6 bg-darker text-gray-400 border-t border-gray-800">
+                        Absolutely. All transactions are processed through Razorpay's PCI-DSS compliant secure gateway, supporting UPI, Cards, and Netbanking.
                     </div>
                 </div>
             </div>
@@ -197,7 +350,7 @@
             <form id="contactForm" class="space-y-6 text-left bg-card p-8 rounded-2xl border border-gray-800 shadow-lg" action="https://api.web3forms.com/submit" method="POST">
                 <!-- Web3Forms Access Key -->
                 <input type="hidden" name="access_key" value="79258098-a08a-4252-a997-2d0fe850a094">
-                
+
                 <!-- Spam protection honeypot -->
                 <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
@@ -228,11 +381,11 @@
             <script>
                 document.getElementById('contactForm').addEventListener('submit', function(e) {
                     e.preventDefault();
-                    
+
                     const form = e.target;
                     const formData = new FormData(form);
                     const submitButton = form.querySelector('button[type="submit"]');
-                    
+
                     // Show loading state
                     submitButton.textContent = 'Sending...';
                     submitButton.disabled = true;
@@ -285,8 +438,9 @@
         </div>
     </footer>
 
-    <!-- Script to handle mobile menu toggle -->
+    <!-- Scripts -->
     <script>
+        // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const mobileLinks = document.querySelectorAll('.mobile-link');
@@ -302,6 +456,82 @@
                 mobileMenu.classList.add('hidden');
             });
         });
+
+        // FAQ Accordion Logic
+        const faqToggles = document.querySelectorAll('.faq-toggle');
+        faqToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('svg');
+                
+                // Close other open items
+                document.querySelectorAll('.faq-content').forEach(otherContent => {
+                    if (otherContent !== content) {
+                        otherContent.classList.add('hidden');
+                        otherContent.previousElementSibling.querySelector('svg').classList.remove('rotate-180');
+                    }
+                });
+
+                // Toggle current item
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+
+        // Music Player Logic
+        const musicBtn = document.getElementById('music-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const equalizer = document.getElementById('equalizer');
+
+        window.onSpotifyIframeApiReady = (IFrameAPI) => {
+            const element = document.getElementById('embed-iframe');
+            const options = {
+                uri: 'spotify:album:242yXSKsSsRTBuQVM1AuTd',
+                width: '100%',
+                height: '100%'
+            };
+            const callback = (EmbedController) => {
+                musicBtn.addEventListener('click', () => {
+                    EmbedController.togglePlay();
+                });
+                
+                EmbedController.addListener('playback_update', e => {
+                    if (e.data.isPaused) {
+                        playIcon.classList.remove('hidden');
+                        pauseIcon.classList.add('hidden');
+                        equalizer.classList.remove('playing');
+                    } else {
+                        playIcon.classList.add('hidden');
+                        pauseIcon.classList.remove('hidden');
+                        equalizer.classList.add('playing');
+                    }
+                });
+            };
+            IFrameAPI.createController(element, options, callback);
+        };
+
+        // Collections Toggle Logic
+        const collectionsToggle = document.getElementById('collections-toggle');
+        const collectionsWrapper = document.getElementById('collections-grid-wrapper');
+        const collectionsIcon = document.getElementById('collections-icon');
+        let isCollectionsOpen = false;
+
+        collectionsToggle.addEventListener('click', () => {
+            isCollectionsOpen = !isCollectionsOpen;
+            if (isCollectionsOpen) {
+                collectionsWrapper.style.maxHeight = collectionsWrapper.scrollHeight + "px";
+                collectionsWrapper.classList.remove('opacity-0');
+                collectionsWrapper.classList.add('opacity-100');
+                collectionsIcon.classList.add('rotate-45');
+            } else {
+                collectionsWrapper.style.maxHeight = "0px";
+                collectionsWrapper.classList.remove('opacity-100');
+                collectionsWrapper.classList.add('opacity-0');
+                collectionsIcon.classList.remove('rotate-45');
+            }
+        });
     </script>
+    <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
 </html>
